@@ -94,7 +94,7 @@ export async function connectProgress(store, config, notify, options = {}) {
     flush,
     async login() {
       errorMessage = ''; report();
-      try { await withDeadline(authSDK.signInWithPopup(auth, provider),25000); }
+      try { await withDeadline(authSDK.signInWithPopup(auth, provider),120000); }
       catch (error) {
         if (!['auth/popup-closed-by-user','auth/cancelled-popup-request'].includes(error.code)) errorMessage=humanError(error);
         report();

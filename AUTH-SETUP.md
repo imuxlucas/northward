@@ -1,8 +1,8 @@
 # Google 登录与进度同步
 
-当前实现位于 `feat/google-progress`，未部署到正式网站。`firebase-config.js` 仍为 `null`，因此正式配置完成前不显示登录入口。
+Firebase 项目 `northward-dea1f` 已创建，使用 Spark 免费方案。Google 登录已启用，GitHub Pages 域名已授权，Firestore 标准版默认数据库位于 `asia-east2`，账户隔离规则已发布。正在验证正式域名的真实登录。
 
-## 待完成的项目设置
+## 项目配置步骤
 
 1. 在 Firebase Console 创建 Northward 项目。首次使用需要账号持有人确认 Firebase 服务条款。无需启用 Google Analytics 或 Google 开发者计划。
 2. Authentication → Sign-in method → 启用 Google，选择项目支持邮箱。
@@ -27,4 +27,4 @@
 - Firebase CLI 13.35.1 仅用于兼容本机 Java 17 的模拟器测试；生产浏览器使用 Firebase Web SDK 13.2.0。依赖不进入网页运行时。
 - Firebase SDK 和测试库推荐 Node >= 24.12；本机 Node 22.22.2 下当前测试也通过。
 
-本地模拟器的 Google 弹窗握手尚未完成验证，需在实际项目配置后完成真实登录验收。云端条款未确认、项目尚未建立，不应将本分支标记为可用的线上登录功能。
+本机浏览器的认证 iframe 握手暂未完成，正在正式 HTTPS 域名继续验收。进度与安全规则测试已通过。
