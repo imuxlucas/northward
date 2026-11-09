@@ -14,20 +14,17 @@
 <body>
   <a class="skip" href="#reading">跳到故事正文</a>
   <header class="site-header wrap">
-    <a class="wordmark" href="#top" aria-label="向北，返回首页"><span class="brand-mark" aria-hidden="true">↟</span> 向北 <span class="brand-en">NORTHWARD</span></a>
-    <nav aria-label="主导航"><a href="#journey">七日旅程</a><a href="#library">原典书架</a><span class="edition">VOL. 01</span></nav>
+    <a class="wordmark" href="#top" aria-label="向北，返回首页"><span class="brand-mark" aria-hidden="true">↟</span> 向北</a>
+    <nav aria-label="主导航"><a href="#journey">七日旅程</a><a href="#library">原典书架</a></nav>
   </header>
   <main id="top">
     <section class="hero wrap" aria-labelledby="hero-title">
       <div class="hero-copy">
-        <div class="eyebrow"><span></span> 一周，一次神话远行</div>
         <h1 id="hero-title">向北走，<br>到故事开始的地方。</h1>
-        <p class="hero-description">从冰与火之间的第一缕生命，<br>读到诸神黄昏之后，重新升起的大地。</p>
+        <p class="hero-description">七天，从世界诞生读到诸神黄昏。</p>
         <a class="button primary" id="begin" href="#day-1">开启第一天 <span aria-hidden="true">↗</span></a>
-        <p class="hero-meta">7 个故事 <span>·</span> 每天约 5–8 分钟 <span>·</span> 零基础可读</p>
       </div>
       <div class="hero-art" role="img" aria-label="夜空与山峦中，一棵金色世界树伸展枝干，根系向大地延伸。">
-        <div class="art-top"><span>YGGDRASILL</span><span>世界之树</span></div>
         <svg class="world-tree" viewBox="0 0 600 560" aria-hidden="true">
           <defs>
             <radialGradient id="sky"><stop stop-color="#497b66" stop-opacity=".55"/><stop offset="1" stop-color="#193c35" stop-opacity="0"/></radialGradient>
@@ -52,36 +49,34 @@
           <g fill="#c5d5c1" opacity=".65"><circle cx="103" cy="110" r="1.4"/><circle cx="191" cy="71" r="1"/><circle cx="400" cy="83" r="1.5"/><circle cx="487" cy="125" r="1"/><circle cx="78" cy="262" r="1.4"/><circle cx="512" cy="316" r="1.5"/><circle cx="355" cy="61" r="1"/><circle cx="450" cy="56" r="1"/></g>
           <path d="M90 194h9m-4.5-4.5v9m391-10h7m-3.5-3.5v7M232 92h7m-3.5-3.5v7" stroke="#bdc7a0" stroke-width="1"/>
         </svg>
-        <div class="art-caption"><span>根系深入未知，枝叶托起诸界。</span><span>01 / 07</span></div>
       </div>
     </section>
 
     <section class="journey wrap" id="journey" aria-labelledby="journey-title">
-      <div class="section-head"><div><p class="kicker">YOUR FIRST WEEK</p><h2 id="journey-title">七天，走进北欧神话</h2></div><p class="journey-description">先认识故事，再慢慢认识世界。</p></div>
+      <div class="section-head"><h2 id="journey-title">七日读本</h2></div>
       <div id="day-grid" class="day-grid" aria-label="选择一天"></div>
-      <div class="progress-row"><span id="progress-label" aria-live="polite">旅程进度 · 0 / 7</span><progress id="progress" max="7" value="0" aria-label="已读篇数">0 / 7</progress><span id="progress-caption">不用赶路，按自己的节奏读。</span></div>
+      <div class="progress-row"><span id="progress-label" aria-live="polite">已读 0 / 7</span><progress id="progress" max="7" value="0" aria-label="已读篇数">0 / 7</progress></div>
     </section>
 
     <section class="reading-section" id="reading" aria-label="每日阅读">
       <div class="reading-layout wrap">
-        <aside class="reading-sidebar"><p class="kicker">FIELD NOTES / 阅读指南</p><h2>今天，<br>只带一个问题出发。</h2><p>读故事 → 认人物 → 想一想。<br>不需要背下所有名字。</p><div class="sidebar-divider"></div><p class="sidebar-label">这篇会遇到</p><dl id="people"></dl><p class="sidebar-foot">中文为依据古代材料编写的入门改写，非原典逐字翻译。文末可核对对应篇章。</p></aside>
+        <aside class="reading-sidebar" aria-label="人物"><dl id="people"></dl></aside>
         <article class="story" aria-labelledby="story-title">
-          <header class="story-header"><div class="story-overline"><span id="story-day"></span><span id="story-time"></span></div><p class="story-english" id="story-english"></p><h2 id="story-title" tabindex="-1"></h2><p class="story-intro" id="story-intro"></p></header>
+          <header class="story-header"><div class="story-overline"><span id="story-day"></span><span id="story-time"></span></div><h2 id="story-title" tabindex="-1"></h2></header>
           <div class="story-body" id="story-body"></div>
-          <aside class="reading-lens"><span class="tiny-star" aria-hidden="true">✳</span><div><h3>换一个角度看</h3><p id="lens"></p></div></aside>
-          <section class="reflection"><p class="kicker">A THOUGHT TO KEEP</p><h3 id="question"></h3><label for="note">留下一点想法</label><textarea id="note" rows="4" maxlength="5000" placeholder="一个疑问、一个画面，或者一句想记住的话……"></textarea><div class="note-meta"><span id="save-status" role="status">笔记仅保存在当前浏览器</span><button id="export-notes" class="text-button" type="button">导出笔记 ↗</button></div></section>
-          <details class="source-details"><summary>故事从哪里来？<span>原典与版本说明 ↗</span></summary><div><p>本篇为现代中文入门改写，非原典逐字翻译。</p><p id="version-note"></p><ul id="sources"></ul><p class="source-language">外链为免费英文旧译，保留历史拼写；不必读完原典才能完成今天的阅读。</p></div></details>
-          <div class="story-actions"><button class="button primary" id="mark-read" type="button" aria-pressed="false">标记今天已读 <span aria-hidden="true">✓</span></button><a id="next-day" class="next-day" href="#day-2">下一天 <span aria-hidden="true">→</span></a></div>
+          <aside class="reading-lens" aria-label="阅读角度"><p id="lens"></p></aside>
+          <section class="reflection"><h3 id="question"></h3><textarea id="note" aria-label="阅读笔记" rows="4" maxlength="5000" placeholder="写点想法……"></textarea><div class="note-meta"><span id="save-status" role="status">仅保存在此浏览器</span><button id="export-notes" class="text-button" type="button">导出笔记 ↗</button></div></section>
+          <details class="source-details"><summary>原典与版本</summary><div><p>中文为现代改写，非逐字翻译；原典多记录于中世纪，各版本有差异。</p><p id="version-note"></p><ul id="sources"></ul><p class="source-language">外链为免费英文旧译。</p></div></details>
+          <div class="story-actions"><button class="button primary" id="mark-read" type="button" aria-pressed="false">标记已读 <span aria-hidden="true">✓</span></button><a id="next-day" class="next-day" href="#day-2">下一天 <span aria-hidden="true">→</span></a></div>
         </article>
       </div>
     </section>
 
-    <section class="library wrap" id="library" aria-labelledby="library-title"><div class="section-head"><div><p class="kicker">THE BOOKS BEHIND THE STORIES</p><h2 id="library-title">故事从哪里找？</h2></div><p class="journey-description">这一周，网页里的七篇就够了。<br>好奇时，再翻开下面的书。</p></div>
-      <div class="book-grid"><a class="book-card" href="https://www.gutenberg.org/ebooks/73533" target="_blank" rel="noopener noreferrer"><div class="book-symbol">诗</div><div><p class="kicker">THE POETIC EDDA</p><h3>《诗体埃达》</h3><p>匿名神话诗与英雄诗的汇集。奥丁求知与雷神寻锤，都可以在这里找到。</p><span>免费英文旧译 · Bellows, 1923 ↗</span></div></a><a class="book-card" href="https://en.wikisource.org/wiki/The_Prose_Edda_%281916%29" target="_blank" rel="noopener noreferrer"><div class="book-symbol">文</div><div><p class="kicker">THE PROSE EDDA</p><h3>《散文埃达》</h3><p>斯诺里编写的诗学著作，保存了大量神话叙事。本周多数故事的主要来源。</p><span>免费英文旧译 · Brodeur, 1916 ↗</span></div></a></div>
-      <p class="library-note">阅读提醒：这些材料的记录与编纂多处于中世纪基督教背景下；神话也有不同版本。本读本按主题编排七天，不代表古代存在一部统一的神话年表。更深入的原典研读留待以后。</p>
+    <section class="library wrap" id="library" aria-labelledby="library-title"><div class="section-head"><h2 id="library-title">原典书架</h2></div>
+      <div class="book-grid"><a class="book-card" href="https://www.gutenberg.org/ebooks/73533" target="_blank" rel="noopener noreferrer"><div class="book-symbol">诗</div><div><h3>《诗体埃达》</h3><span>Bellows 英译 · 1923 ↗</span></div></a><a class="book-card" href="https://en.wikisource.org/wiki/The_Prose_Edda_%281916%29" target="_blank" rel="noopener noreferrer"><div class="book-symbol">文</div><div><h3>《散文埃达》</h3><span>Brodeur 英译 · 1916 ↗</span></div></a></div>
     </section>
   </main>
-  <footer class="wrap"><a class="wordmark" href="#top">↟ 向北</a><p>第一周 · 先让故事发生</p><a href="https://github.com/imuxlucas/northward" target="_blank" rel="noopener noreferrer">GitHub ↗</a></footer>
+  <footer class="wrap"><a class="wordmark" href="#top">↟ 向北</a><a href="https://github.com/imuxlucas/northward" target="_blank" rel="noopener noreferrer">GitHub ↗</a></footer>
   <noscript><div class="noscript">每日故事需要启用 JavaScript。也可以通过上方“原典书架”直接阅读免费原典。</div></noscript>
 </body>
 </html>

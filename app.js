@@ -19,13 +19,13 @@
     catch { storageAvailable = false; }
   };
   const status = () => {
-    $('save-status').textContent = storageAvailable ? (state.notes[current] ? '已保存 · 仅在当前浏览器' : '笔记仅保存在当前浏览器') : '浏览器无法保存，离开前请导出笔记';
+    $('save-status').textContent = storageAvailable ? '仅保存在此浏览器' : '浏览器无法保存，离开前请导出笔记';
   };
   const cards = stories.map(story => {
     const link = document.createElement('a');
     link.href = '#day-' + story.id;
     link.className = 'day-card';
-    link.innerHTML = `<span class="number">0${story.id}</span><span class="check" aria-hidden="true"></span><h3>${story.short}</h3><span class="tag">${story.motif}<span class="day-label"> · DAY ${story.id}</span></span>`;
+    link.innerHTML = `<span class="number">0${story.id}</span><span class="check" aria-hidden="true"></span><h3>${story.short}</h3>`;
     $('day-grid').append(link);
     return link;
   });
@@ -33,8 +33,7 @@
     const count = state.read.length;
     $('progress').value = count;
     $('progress').textContent = `${count} / 7`;
-    $('progress-label').textContent = `旅程进度 · ${count} / 7`;
-    $('progress-caption').textContent = count === 7 ? '第一周已完成。故事会留下来，随时回来重读。' : '不用赶路，按自己的节奏读。';
+    $('progress-label').textContent = `已读 ${count} / 7`;
     cards.forEach((card, index) => {
       const id = index + 1;
       const done = state.read.includes(id);
@@ -44,7 +43,8 @@
     });
     const done = state.read.includes(current);
     $('mark-read').setAttribute('aria-pressed', String(done));
-    $('mark-read').innerHTML = done ? '已读完 · 点击撤销 <span aria-hidden="true">✓</span>' : '标记今天已读 <span aria-hidden="true">✓</span>';
+    $('mark-read').setAttribute('aria-label', done ? '已读，点击撤销' : '标记已读');
+    $('mark-read').innerHTML = done ? '已读 <span aria-hidden="true">✓</span>' : '标记已读 <span aria-hidden="true">✓</span>';
     $('begin').href = '#day-' + state.last;
     $('begin').innerHTML = state.read.length || state.notes[state.last] || state.last > 1 ? `继续第 ${state.last} 天 <span aria-hidden="true">↗</span>` : '开启第一天 <span aria-hidden="true">↗</span>';
   }
@@ -53,11 +53,9 @@
     state.last = id;
     const s = stories[id - 1];
     document.title = `第 ${id} 天 · ${s.short} — 向北`;
-    $('story-day').textContent = `DAY 0${id} / ${s.motif}`;
-    $('story-time').textContent = `阅读与思考约 ${s.time}`;
-    $('story-english').textContent = s.english;
+    $('story-day').textContent = `第 ${id} 天`;
+    $('story-time').textContent = s.time;
     $('story-title').textContent = s.title;
-    $('story-intro').textContent = s.intro;
     $('story-body').replaceChildren(...s.paragraphs.map(text => { const p=document.createElement('p'); p.textContent=text; return p; }));
     $('people').replaceChildren(...s.people.map(([name, detail]) => {
       const group=document.createElement('div'); const dt=document.createElement('dt'); const dd=document.createElement('dd');
@@ -73,7 +71,7 @@
     }));
     document.querySelector('.source-details').open = false;
     $('next-day').href = id === 7 ? '#library' : '#day-' + (id+1);
-    $('next-day').innerHTML = id === 7 ? '去原典书架 <span aria-hidden="true">↗</span>' : `下一天 · ${stories[id].short} <span aria-hidden="true">→</span>`;
+    $('next-day').innerHTML = id === 7 ? '原典书架 <span aria-hidden="true">↗</span>' : '下一天 <span aria-hidden="true">→</span>';
     save(); status(); updateProgress();
     if (focus) {
       $('story-title').focus({preventScroll:true});
