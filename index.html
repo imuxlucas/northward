@@ -7,16 +7,17 @@
   <meta name="description" content="向北：七天读懂北欧神话的第一章。中文故事、人物提示、原典链接与私人阅读笔记，从世界诞生走到诸神黄昏。">
   <title>向北 · 七日北欧神话读本</title>
   <link rel="icon" href="./favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./style.css?v=2">
+  <link rel="stylesheet" href="./style.css?v=3">
   <script src="./content.js" defer></script>
-  <script src="./app.js?v=2" defer></script>
+  <script type="module" src="./app.js?v=3"></script>
 </head>
 <body>
   <a class="skip" href="#reading">跳到故事正文</a>
   <header class="site-header wrap">
     <a class="wordmark" href="#top" aria-label="向北，返回首页"><span class="brand-mark" aria-hidden="true">↟</span> 向北</a>
-    <nav aria-label="主导航"><a href="#journey">七日旅程</a><a href="#library">原典书架</a></nav>
+    <nav aria-label="主导航"><a href="#journey">七日旅程</a><a href="#library">原典书架</a><div class="account-controls"><button id="login" type="button" class="login-button" hidden>Google 登录</button><details id="account-menu" class="account-menu" hidden><summary id="account-name">我的账号</summary><div class="account-popover"><p id="sync-status" role="status">正在连接…</p><button id="import-progress" type="button" hidden>合并本机已读进度</button><button id="logout" type="button">退出登录</button></div></details></div></nav>
   </header>
+  <p id="account-notice" class="account-notice wrap" role="status" hidden></p>
   <main id="top">
     <section class="hero wrap" aria-labelledby="hero-title">
       <div class="hero-copy">
@@ -65,7 +66,7 @@
           <header class="story-header"><div class="story-overline"><span id="story-day"></span><span id="story-time"></span></div><h2 id="story-title" tabindex="-1"></h2></header>
           <div class="story-body" id="story-body"></div>
           <aside class="reading-lens" aria-label="阅读角度"><p id="lens"></p></aside>
-          <section class="reflection"><h3 id="question"></h3><textarea id="note" aria-label="阅读笔记" rows="4" maxlength="5000" placeholder="写点想法……"></textarea><div class="note-meta"><span id="save-status" role="status">仅保存在此浏览器</span><button id="export-notes" class="text-button" type="button">导出笔记 ↗</button></div></section>
+          <section class="reflection"><h3 id="question"></h3><textarea id="note" aria-label="阅读笔记" rows="4" maxlength="5000" placeholder="写点想法……"></textarea><div class="note-meta"><span id="save-status" role="status">笔记仅保存在此浏览器</span><button id="export-notes" class="text-button" type="button">导出笔记 ↗</button></div></section>
           <details class="source-details"><summary>原典与版本</summary><div><p>中文为现代改写，非逐字翻译；原典多记录于中世纪，各版本有差异。</p><p id="version-note"></p><ul id="sources"></ul><p class="source-language">外链为免费英文旧译。</p></div></details>
           <div class="story-actions"><button class="button primary" id="mark-read" type="button" aria-pressed="false">标记已读 <span aria-hidden="true">✓</span></button><a id="next-day" class="next-day" href="#day-2">下一天 <span aria-hidden="true">→</span></a></div>
         </article>

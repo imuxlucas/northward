@@ -1,26 +1,45 @@
+import { ReaderStore } from './reader-store.js?v=3';
+import { firebaseConfig } from './firebase-config.js?v=3';
+function browserStorage() {
+  try { return window.localStorage; }
+  catch { return {getItem(){throw new Error('unavailable');},setItem(){throw new Error('unavailable');}}; }
+}
+
 (() => {
   'use strict';
   const stories = window.STORIES;
   const $ = (id) => document.getElementById(id);
-  const key = 'northward-week-one-v1';
-  let state = { read: [], notes: {}, last: 1 };
-  let storageAvailable = true;
-  try {
-    const saved = JSON.parse(localStorage.getItem(key) || 'null');
-    if (saved && typeof saved === 'object') {
-      state.read = Array.isArray(saved.read) ? [...new Set(saved.read.filter(n => Number.isInteger(n) && n >= 1 && n <= 7))] : [];
-      state.notes = Object.fromEntries(Object.entries(saved.notes && typeof saved.notes === 'object' ? saved.notes : {}).filter(([k, v]) => /^[1-7]$/.test(k) && typeof v === 'string').map(([k,v]) => [k,v.slice(0,5000)]));
-      state.last = Number.isInteger(saved.last) && saved.last >= 1 && saved.last <= 7 ? saved.last : 1;
-    }
-  } catch { storageAvailable = false; }
+  const store = new ReaderStore(browserStorage());
+  let state = store.state;
   let current = state.last;
-  const save = () => {
-    try { localStorage.setItem(key, JSON.stringify(state)); storageAvailable = true; }
-    catch { storageAvailable = false; }
-  };
-  const status = () => {
-    $('save-status').textContent = storageAvailable ? '仅保存在此浏览器' : '浏览器无法保存，离开前请导出笔记';
-  };
+  let cloud = null;
+  let activeOwner = null;
+  let cloudState = {user:null,syncing:false,connected:false,error:''};
+  function status() {
+    $('save-status').textContent = store.available ? '笔记仅保存在此浏览器' : '浏览器无法保存，请导出笔记';
+    $('account-notice').textContent = cloudState.error;
+    $('account-notice').hidden = !cloudState.error;
+    $('login').hidden = Boolean(cloudState.user) || !firebaseConfig;
+    $('login').textContent = cloud || !cloudState.error ? 'Google 登录' : '重试连接';
+    $('account-menu').hidden = !cloudState.user;
+    $('account-name').textContent = cloudState.user?.displayName || '我的账号';
+    $('sync-status').textContent = cloudState.error ? '同步未完成' :
+      !navigator.onLine ? '离线 · 进度待同步' :
+      cloudState.syncing ? '正在同步…' :
+      cloudState.connected ? '进度已同步' : '正在连接…';
+    $('import-progress').hidden = !store.canImportGuest();
+  }
+  function cloudChanged(next) {
+    cloudState = next;
+    state = store.state;
+    if (activeOwner !== store.owner) {
+      activeOwner = store.owner;
+      $('account-menu').open = false;
+      const route = location.hash.match(/^#day-([1-7])$/);
+      render(route ? Number(route[1]) : state.last, false, false);
+    }
+    status(); updateProgress();
+  }
   const cards = stories.map(story => {
     const link = document.createElement('a');
     link.href = '#day-' + story.id;
@@ -48,9 +67,10 @@
     $('begin').href = '#day-' + state.last;
     $('begin').innerHTML = state.read.length || state.notes[state.last] || state.last > 1 ? `继续第 ${state.last} 天 <span aria-hidden="true">↗</span>` : '开启第一天 <span aria-hidden="true">↗</span>';
   }
-  function render(id, focus = false) {
+  function render(id, focus = false, track = true) {
     current = id;
-    state.last = id;
+    if (track) store.setLast(id);
+    state = store.state;
     const s = stories[id - 1];
     document.title = `第 ${id} 天 · ${s.short} — 向北`;
     $('story-day').textContent = `第 ${id} 天`;
@@ -72,7 +92,8 @@
     document.querySelector('.source-details').open = false;
     $('next-day').href = id === 7 ? '#library' : '#day-' + (id+1);
     $('next-day').innerHTML = id === 7 ? '原典书架 <span aria-hidden="true">↗</span>' : '下一天 <span aria-hidden="true">→</span>';
-    save(); status(); updateProgress();
+    status(); updateProgress();
+    if (track) void cloud?.flush();
     if (focus) {
       $('story-title').focus({preventScroll:true});
       $('reading').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth'});
@@ -85,17 +106,40 @@
     if(anchor && anchor.hash === location.hash) { event.preventDefault(); fromHash(); }
   });
   $('mark-read').addEventListener('click',() => {
-    state.read = state.read.includes(current) ? state.read.filter(id => id !== current) : [...state.read,current];
-    save(); status(); updateProgress();
+    store.setRead(current, !state.read.includes(current));
+    store.setLast(current);
+    status(); updateProgress(); void cloud?.flush();
   });
-  $('note').addEventListener('input',() => { state.notes[current]=$('note').value; save(); status(); });
+  $('note').addEventListener('input',() => { store.setNote(current,$('note').value); status(); });
   $('export-notes').addEventListener('click',() => {
     const lines=['向北 · 第一周阅读笔记','进度与笔记导出自当前浏览器',''];
     stories.forEach(s => lines.push(`第 ${s.id} 天｜${s.title} ${state.read.includes(s.id)?'（已读）':'（未标记）'}`,`想一想：${s.question}`,state.notes[s.id] || '尚未记录。',''));
     const url=URL.createObjectURL(new Blob(['\uFEFF'+lines.join('\n')],{type:'text/plain;charset=utf-8'}));
     const a=document.createElement('a'); a.href=url; a.download='向北-第一周阅读笔记.txt'; document.body.append(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url),1000);
   });
+  $('login').addEventListener('click',async () => {
+    $('login').disabled = true;
+    try { if (cloud) await cloud.login(); else await initializeCloud(); }
+    finally { $('login').disabled = false; }
+  });
+  $('logout').addEventListener('click',async () => {
+    $('logout').disabled = true;
+    try { await cloud?.logout(); } finally { $('logout').disabled = false; }
+  });
+  $('import-progress').addEventListener('click',() => cloud?.importGuest());
+  async function initializeCloud() {
+    if (!firebaseConfig) return;
+    $('login').disabled = true;
+    try {
+      const {connectProgress} = await import('./cloud-progress.js?v=3');
+      cloud = await connectProgress(store,firebaseConfig,cloudChanged);
+    } catch {
+      cloudState.error = 'Google 连接失败，本机阅读仍可使用。点击登录重试。';
+      status();
+    } finally { $('login').disabled = false; status(); }
+  }
   const initial = location.hash.match(/^#day-([1-7])$/);
   render(initial ? Number(initial[1]) : current);
+  void initializeCloud();
   if(initial) requestAnimationFrame(()=> { $('reading').scrollIntoView({behavior:'instant'}); });
 })();

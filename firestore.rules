@@ -1,0 +1,27 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function owner(uid) {
+      return request.auth != null && request.auth.uid == uid;
+    }
+    function validReadMap(data) {
+      return data is map && data.keys().hasOnly(['1','2','3','4','5','6','7'])
+        && (!('1' in data) || data['1'] is bool)
+        && (!('2' in data) || data['2'] is bool)
+        && (!('3' in data) || data['3'] is bool)
+        && (!('4' in data) || data['4'] is bool)
+        && (!('5' in data) || data['5'] is bool)
+        && (!('6' in data) || data['6'] is bool)
+        && (!('7' in data) || data['7'] is bool);
+    }
+    match /users/{uid}/learning/week-one {
+      allow read: if owner(uid);
+      allow create, update: if owner(uid)
+        && request.resource.data.keys().hasOnly(['read','last','updatedAt'])
+        && request.resource.data.updatedAt == request.time
+        && (!('read' in request.resource.data) || validReadMap(request.resource.data.read))
+        && (!('last' in request.resource.data) ||
+          (request.resource.data.last is int && request.resource.data.last >= 1 && request.resource.data.last <= 7));
+    }
+  }
+}
