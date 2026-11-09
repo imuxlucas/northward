@@ -78,6 +78,7 @@ function browserStorage() {
     $('story-time').textContent = s.time;
     $('story-title').textContent = s.title;
     $('story-body').replaceChildren(...s.paragraphs.map(text => { const p=document.createElement('p'); p.textContent=text; return p; }));
+    $('story-family').hidden = id !== 1;
     $('people').replaceChildren(...s.people.map(([name, detail]) => {
       const group=document.createElement('div'); const dt=document.createElement('dt'); const dd=document.createElement('dd');
       dt.textContent=name; dd.textContent=detail; group.append(dt,dd); return group;

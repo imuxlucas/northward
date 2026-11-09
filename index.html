@@ -7,9 +7,9 @@
   <meta name="description" content="向北：七天读懂北欧神话的第一章。中文故事、人物提示、原典链接与私人阅读笔记，从世界诞生走到诸神黄昏。">
   <title>向北 · 七日北欧神话读本</title>
   <link rel="icon" href="./favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./style.css?v=4">
+  <link rel="stylesheet" href="./style.css?v=5">
   <script src="./content.js" defer></script>
-  <script type="module" src="./app.js?v=4"></script>
+  <script type="module" src="./app.js?v=5"></script>
 </head>
 <body>
   <a class="skip" href="#reading">跳到故事正文</a>
@@ -65,6 +65,42 @@
         <article class="story" aria-labelledby="story-title">
           <header class="story-header"><div class="story-overline"><span id="story-day"></span><span id="story-time"></span></div><h2 id="story-title" tabindex="-1"></h2></header>
           <div class="story-body" id="story-body"></div>
+          <figure id="story-family" class="family-tree" hidden>
+            <h3>创世家谱</h3>
+            <svg viewBox="0 0 420 450" role="img" aria-labelledby="family-title family-description">
+              <title id="family-title">尤弥尔、布利与奥丁的家谱</title>
+              <desc id="family-description">尤弥尔是巨人始祖，与博尔索恩之间的具体亲缘世代未记载。博尔索恩的女儿是贝斯特拉；布利的儿子是博尔。贝斯特拉与博尔结为夫妻，生下奥丁、威利和维。奥丁的外公是博尔索恩，爷爷是布利。</desc>
+              <g class="family-lines" aria-hidden="true">
+                <path class="family-unknown" d="M105 80V140"/>
+                <path d="M105 200V245M315 200V245M175 275H245M210 275V350M70 385V350H350V385M210 350V385"/>
+              </g>
+              <g class="family-nodes" aria-hidden="true">
+                <rect x="35" y="20" width="140" height="60"/>
+                <text x="105" y="45">尤弥尔</text>
+                <text x="105" y="66" class="family-small">巨人始祖</text>
+                <text x="117" y="114" class="family-uncertain">具体世代未载</text>
+                <rect x="35" y="140" width="140" height="60"/>
+                <text x="105" y="176">博尔索恩</text>
+                <rect x="245" y="140" width="140" height="60"/>
+                <text x="315" y="176">布利</text>
+                <rect x="35" y="245" width="140" height="60"/>
+                <text x="105" y="281">贝斯特拉</text>
+                <rect x="245" y="245" width="140" height="60"/>
+                <text x="315" y="281">博尔</text>
+                <text x="210" y="261" class="family-small">夫妻</text>
+                <rect x="20" y="385" width="100" height="54" class="family-odin"/>
+                <text x="70" y="418" class="family-odin-name">奥丁</text>
+                <rect x="160" y="385" width="100" height="54"/>
+                <text x="210" y="418">威利</text>
+                <rect x="300" y="385" width="100" height="54"/>
+                <text x="350" y="418">维</text>
+              </g>
+            </svg>
+            <figcaption>
+              <p>奥德姆布拉以奶喂养尤弥尔，又从冰中舔出布利；这两种关系都不是生育。后来杀死尤弥尔的，是最下面的三兄弟。</p>
+              <a href="https://sacred-texts.com/book/the-prose-edda/gylfaginning" target="_blank" rel="noopener noreferrer">《散文埃达·欺骗古鲁菲》第五至七章 ↗</a>
+            </figcaption>
+          </figure>
           <aside class="reading-lens" aria-label="阅读角度"><p id="lens"></p></aside>
           <section class="reflection"><h3 id="question"></h3><textarea id="note" aria-label="阅读笔记" rows="4" maxlength="5000" placeholder="写点想法……"></textarea><div class="note-meta"><span id="save-status" role="status">笔记仅保存在此浏览器</span><button id="export-notes" class="text-button" type="button">导出笔记 ↗</button></div></section>
           <details class="source-details"><summary>原典与版本</summary><div><p>中文为现代改写，非逐字翻译；原典多记录于中世纪，各版本有差异。</p><p id="version-note"></p><ul id="sources"></ul><p class="source-language">外链为免费英文旧译。</p></div></details>
