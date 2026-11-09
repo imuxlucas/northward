@@ -1,6 +1,6 @@
 # Google 登录与进度同步
 
-Firebase 项目 `northward-dea1f` 已创建，使用 Spark 免费方案。Google 登录已启用，GitHub Pages 域名已授权，Firestore 标准版默认数据库位于 `asia-east2`，账户隔离规则已发布。正在验证正式域名的真实登录。
+Firebase 项目 `northward-dea1f` 已创建，使用 Spark 免费方案。Google 登录已启用，GitHub Pages 域名已授权，Firestore 标准版默认数据库位于 `asia-east2`，账户隔离规则已发布。Google 登录与进度同步已通过正式域名验收。
 
 ## 项目配置步骤
 
@@ -27,4 +27,6 @@ Firebase 项目 `northward-dea1f` 已创建，使用 Spark 免费方案。Google
 - Firebase CLI 13.35.1 仅用于兼容本机 Java 17 的模拟器测试；生产浏览器使用 Firebase Web SDK 13.2.0。依赖不进入网页运行时。
 - Firebase SDK 和测试库推荐 Node >= 24.12；本机 Node 22.22.2 下当前测试也通过。
 
-本机浏览器的认证 iframe 握手暂未完成，正在正式 HTTPS 域名继续验收。进度与安全规则测试已通过。
+已使用 Google 账号在 GitHub Pages 正式网站完成登录、进度写入，并在独立来源的浏览器存储中恢复进度；撤销已读双向同步通过。登录账号选择按用户节奏等待，关闭弹窗后可重试。
+
+Google OAuth 网页客户端授权来源包含正式网站 `https://imuxlucas.github.io` 和本地开发 `http://localhost:8766`。实际认证使用 Firebase 官方 `signInWithPopup`，前端不保存 OAuth 客户端密钥。

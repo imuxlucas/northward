@@ -1,5 +1,5 @@
-import { ReaderStore } from './reader-store.js?v=3';
-import { firebaseConfig } from './firebase-config.js?v=3';
+import { ReaderStore } from './reader-store.js?v=4';
+import { firebaseConfig } from './firebase-config.js?v=4';
 function browserStorage() {
   try { return window.localStorage; }
   catch { return {getItem(){throw new Error('unavailable');},setItem(){throw new Error('unavailable');}}; }
@@ -13,6 +13,7 @@ function browserStorage() {
   let state = store.state;
   let current = state.last;
   let cloud = null;
+  let loggingIn = false;
   let activeOwner = null;
   let cloudState = {user:null,syncing:false,connected:false,error:''};
   function status() {
@@ -20,7 +21,7 @@ function browserStorage() {
     $('account-notice').textContent = cloudState.error;
     $('account-notice').hidden = !cloudState.error;
     $('login').hidden = Boolean(cloudState.user) || !firebaseConfig;
-    $('login').textContent = cloud || !cloudState.error ? 'Google 登录' : '重试连接';
+    $('login').textContent = loggingIn ? '请在弹窗中登录…' : cloud || !cloudState.error ? 'Google 登录' : '重试连接';
     $('account-menu').hidden = !cloudState.user;
     $('account-name').textContent = cloudState.user?.displayName || '我的账号';
     $('sync-status').textContent = cloudState.error ? '同步未完成' :
@@ -118,9 +119,11 @@ function browserStorage() {
     const a=document.createElement('a'); a.href=url; a.download='向北-第一周阅读笔记.txt'; document.body.append(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url),1000);
   });
   $('login').addEventListener('click',async () => {
+    loggingIn = Boolean(cloud);
     $('login').disabled = true;
+    status();
     try { if (cloud) await cloud.login(); else await initializeCloud(); }
-    finally { $('login').disabled = false; }
+    finally { loggingIn = false; $('login').disabled = false; status(); }
   });
   $('logout').addEventListener('click',async () => {
     $('logout').disabled = true;
@@ -131,7 +134,7 @@ function browserStorage() {
     if (!firebaseConfig) return;
     $('login').disabled = true;
     try {
-      const {connectProgress} = await import('./cloud-progress.js?v=3');
+      const {connectProgress} = await import('./cloud-progress.js?v=4');
       cloud = await connectProgress(store,firebaseConfig,cloudChanged);
     } catch {
       cloudState.error = 'Google 连接失败，本机阅读仍可使用。点击登录重试。';

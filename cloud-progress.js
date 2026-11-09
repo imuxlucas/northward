@@ -1,4 +1,4 @@
-import { cloudPatch } from './reader-store.js?v=3';
+import { cloudPatch } from './reader-store.js?v=4';
 
 async function withDeadline(task, milliseconds) {
   let timer;
@@ -94,7 +94,8 @@ export async function connectProgress(store, config, notify, options = {}) {
     flush,
     async login() {
       errorMessage = ''; report();
-      try { await withDeadline(authSDK.signInWithPopup(auth, provider),120000); }
+      // Account selection is user-paced. Let Firebase detect closed/blocked popups.
+      try { await authSDK.signInWithPopup(auth, provider); }
       catch (error) {
         if (!['auth/popup-closed-by-user','auth/cancelled-popup-request'].includes(error.code)) errorMessage=humanError(error);
         report();
